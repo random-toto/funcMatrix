@@ -2,8 +2,8 @@
 #-*- coding: utf-8 -*-
 
 def absMat(matrice):
-	'''Renvoie la matrice avec la valeur absolue de tous ses coefficients. Renvoie False si échec.
-	- matrice
+    '''Renvoie la matrice avec la valeur absolue de tous ses coefficients. Renvoie False si échec.
+    - matrice
     - complexe
 	'''
 	if type(matrice) is not list:
@@ -26,8 +26,8 @@ def absMat(matrice):
 
 
 def det2Mat(matrice):
-	'''Renvoie le déterminant d'une matrice 2*2. False en cas d'échec
-	- matrice
+    '''Renvoie le déterminant d'une matrice 2*2. False en cas d'échec
+    - matrice
     - complexe
     - 2*2
     '''
@@ -54,7 +54,7 @@ def isMatrice(matrice):
 
 
 def det3Mat(matrice):
-	'''Renvoie le déterminant d'une matrice 3*3. False en cas d'échec
+    '''Renvoie le déterminant d'une matrice 3*3. False en cas d'échec
 	- matrice
     - complexe
     - 3*3
@@ -77,7 +77,7 @@ def det3Mat(matrice):
 
 
 def detMat(matrice):
-	'''renvoie le déterinant de la matrice
+    '''renvoie le déterinant de la matrice
     - matrice
     - rectangulaire
     - complexe
@@ -241,8 +241,8 @@ def nbEleMat(matrice):
     '''renvoie le nombre d'éléments
     - matrice
     '''
-    if not isMatrice(matrice)
-    n = 0
+    if not isMatrice(matrice):
+        n = 0
     for i in matrice:
         for j in i:
             n += 1
