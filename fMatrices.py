@@ -7,19 +7,23 @@ def absMat(matrice):
     - complexe
     '''
     if type(matrice) is not list:
-        return False
+        raise Exception("absMat : Pas une matrice.")
+        #~ return False
     if not len(matrice):
-        return False
+        raise Exception("absMat : La matrice est une liste vide.")
+        #~ return False
     M = []
     for i in matrice:
         L = []
         if type(i) is not list:
-            return False
+            raise Exception("absMat : Les éléments de la liste ne sont pas des listes.")
+            #~ return False
         for j in i:
             try:
                 e = abs(j)
             except:
-                return False
+                raise Exception("absMat : Impossible de calculer la valeur absolue.")
+                #~ return False
             L.append(e)
         M.append(L)
     return M 
@@ -39,16 +43,19 @@ def det2Mat(matrice):
         e = a*d - b*c
         return e
     except:
-        return False
+        raise Exception("det2Mat : le calcul du déterminant a échoué")
+        #~ return False
 
 def isMatrice(matrice):
     '''renvoie True s'il s'agit d'une matrice
     '''
     if type(matrice) is not list:
-        return False
+        raise Exception("isMatrice : Pas une liste.")
+        #~ return False
     for i in matrice:
         if type(i) is not list:
-            return False
+            raise Exception("isMatrice : Pas une liste de liste")
+            #~ return False
     return True
 
 
@@ -57,9 +64,40 @@ def newMatrix(matrice):
     False en cas d'échec
     '''
     if not isMatrice(matrice):
-        return False
+        raise Exception("newMatrice : Pas une matrice")
+        #~ return False
     return [i[:] for i in matrice]
 
+
+def isListCpx(vecteur):
+    '''
+    '''
+    for i in vecteur:
+        try:
+            abs(i)
+        except:
+            raise Exception("isListCpx : élément non complexe.")
+            #~ return False
+    return True
+
+def pdVect(v1, v2):
+    '''
+    '''
+    if type(v1) is not list or type(v2) is not list:
+        raise Exception("pdVect : pas un vecteur/list")
+        #~ return False
+    if len(v1) != len(v2):
+        raise Exception("pdVect : Les vecteurs n'ont pas la même taille")
+        #~ return False
+    if not isListCpx(v1) or not isListCpx(v2):
+        raise Exception("pdVect : Un élément n'est pas un vecteur/list")
+        #~ return False
+    s = 0
+    for i in v1:
+        for j in v2:
+            s += i*j
+    return s
+    
 
 def det3Mat(matrice):
     '''Renvoie le déterminant d'une matrice 3*3. False en cas d'échec
@@ -80,7 +118,8 @@ def det3Mat(matrice):
         r = a*e*i + d*h*c + g*b*f - (g*e*c + a*h*f + d*b*i)
         return r
     except:
-        return False
+        raise Exception("det3Mat : Le calcul du déterminant a échoué.")
+        #~ return False
 
     
 def transposeMat2d(matrice):
@@ -91,14 +130,16 @@ def transposeMat2d(matrice):
     if isMatrice(matrice):
         return [list(i) for i in zip(*matrice)]
     else:
-        return False
+        raise Exception("transposeMat2d : Pas une matrice.")
+        #~ return False
     
 def isMatRect(matrice):
     '''renvoie True si la matrice est rectangulaire
     - matrice
     '''
     if not isMatrice(matrice):
-        return False
+        raise Exception("isMatRect : Pas une matrice.")
+        #~ return False
     l = len(matrice[0])
     for i in matrice:
         if len(i) != l:
@@ -111,7 +152,8 @@ def isMatCarree(matrice):
     - matrice
     '''
     if not isMatrice(matrice):
-        return False
+        raise Exception("isMatCarree : Pas une matrice")
+        #~ return False
     l = len(matrice[0])
     for i in matrice:
         if len(i) != l:
@@ -284,11 +326,11 @@ def subMatrix(matrice, ligne, colonne):
     i, j = tailleMat(matrice)
     if ligne >= i or colonne >= j:
         return 3
-    ############################################################################ 
     M = []
-    X = []
-    for i in matrice:
-        X.append(i[:])
+    #~ X = []
+    #~ for i in matrice:
+        #~ X.append(i[:])
+    X = newMatrix(matrice)
     for i, line in enumerate(X):
         if i != ligne:
             line.pop(colonne)
@@ -318,7 +360,51 @@ def detMat(matrice):
     return s
 
 
+def isInversible(matrice):
+    '''
+    '''
+    if detMat(matrice):
+        return True
+    else:
+        return False
 
+
+def coFacteur(matrice, ligne, colonne):
+    '''
+    '''
+    return ((-1)**(ligne+colonne))*detMat(subMatrix(matrice, ligne, colonne))
+
+
+def coMatrice(matrice):
+    '''
+    '''
+    if not isMatCarree(matrice):
+        return False
+    M = []
+    for i, line in enumerate(matrice):
+        L = []
+        for j, column in enumerate(line):
+            L.append(coFacteur(matrice, i, j))
+        M.append(L)
+    return M
+
+
+def pdMat(mat1, mat2):
+    '''
+    '''
+    if not sizeOfPdMat(mat1, mat2):
+        return False
+    M1 = newMatrix(mat1)
+    M2 = newMatrix(mat2)
+    M2 = transposeMat2d(M2)
+    M = []
+    for i in M1:
+        L = []
+        for j in M2:
+            L.append(pdVect(i, j))
+        M.append(L)
+    return M
+    
 
 
 
@@ -332,7 +418,7 @@ b = [
     [1, 0, 0, 0, 0], 
     [0, 1, 0, 0, 0], 
     [0, 0, 1, 0, 0], 
-    [0, 0, 0, 1, 0], 
+    [4, 0, 0, 1, 0], 
     [0, 0, 0, 0, 1]
     ]
 
@@ -343,3 +429,8 @@ c = [
     [0, 0, 0, 1]
     ] 
 
+#~ print(detMat(b))
+#~ d = coMatrice(b)
+#~ print(d)
+
+print(pdMat(b, b))
