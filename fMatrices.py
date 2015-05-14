@@ -5,24 +5,24 @@ def absMat(matrice):
     '''Renvoie la matrice avec la valeur absolue de tous ses coefficients. Renvoie False si échec.
     - matrice
     - complexe
-	'''
-	if type(matrice) is not list:
-		return False
-	if not len(matrice):
-		return False
-	M = []
-	for i in matrice:
-		L = []
-		if type(i) is not list:
-			return False
-		for j in i:
-			try:
-				e = abs(j)
-			except:
-				return False
-			L.append(e)
-		M.append(L)
-	return M 
+    '''
+    if type(matrice) is not list:
+        return False
+    if not len(matrice):
+        return False
+    M = []
+    for i in matrice:
+        L = []
+        if type(i) is not list:
+            return False
+        for j in i:
+            try:
+                e = abs(j)
+            except:
+                return False
+            L.append(e)
+        M.append(L)
+    return M 
 
 
 def det2Mat(matrice):
@@ -31,15 +31,15 @@ def det2Mat(matrice):
     - complexe
     - 2*2
     '''
-	try:
-		a = matrice[0][0]
-		b = matrice[0][1]
-		c = matrice[1][0]
-		d = matrice[1][1]
-		e = a*d - b*c
-		return e
-	except:
-		return False
+    try:
+        a = matrice[0][0]
+        b = matrice[0][1]
+        c = matrice[1][0]
+        d = matrice[1][1]
+        e = a*d - b*c
+        return e
+    except:
+        return False
 
 def isMatrice(matrice):
     '''renvoie True s'il s'agit d'une matrice
@@ -52,37 +52,36 @@ def isMatrice(matrice):
     return True
 
 
+def newMatrix(matrice):
+    '''renvoie une copie de la liste de liste envoyée
+    False en cas d'échec
+    '''
+    if not isMatrice(matrice):
+        return False
+    return [i[:] for i in matrice]
+
 
 def det3Mat(matrice):
     '''Renvoie le déterminant d'une matrice 3*3. False en cas d'échec
-	- matrice
+    - matrice
     - complexe
     - 3*3
     '''
-	try:
-		a = matrice[0][0]
-		b = matrice[0][1]
-		c = matrice[0][2]
-		d = matrice[1][0]
-		e = matrice[1][1]
-		f = matrice[1][2]
-		g = matrice[2][0]
-		h = matrice[2][1]
-		i = matrice[2][2]
-		r = a*e*i + d*h*c + g*b*f - (g*e*c + a*h*f + d*b*i)
-		return r
-	except:
-		return False
+    try:
+        a = matrice[0][0]
+        b = matrice[0][1]
+        c = matrice[0][2]
+        d = matrice[1][0]
+        e = matrice[1][1]
+        f = matrice[1][2]
+        g = matrice[2][0]
+        h = matrice[2][1]
+        i = matrice[2][2]
+        r = a*e*i + d*h*c + g*b*f - (g*e*c + a*h*f + d*b*i)
+        return r
+    except:
+        return False
 
-
-
-def detMat(matrice):
-    '''renvoie le déterinant de la matrice
-    - matrice
-    - rectangulaire
-    - complexe
-	'''
-	print("Hello World !")
     
 def transposeMat2d(matrice):
     '''renvoie la matrice transposée. False en cas d'échec
@@ -248,21 +247,99 @@ def nbEleMat(matrice):
             n += 1
     return n
 
+
+def traceMatrix(matrice):
+    '''
+    '''
+    if not isMatCarree(matrice):
+        return False
+    n, p = tailleMat(matrice)
+    s = 0
+    for i in range(n):
+        s += matrice[i][i]
+    return s
+
+
+def sizeOfPdMat(mat1, mat2):
+    '''
+    '''
+    if not isMatRect(mat1) or not isMatRect(mat2):
+        return False
+    a, b = tailleMat(mat1)
+    c, d = tailleMat(mat2)
+    return (a, d)
+
+
+def subMatrix(matrice, ligne, colonne):
+    ''' 
+    ligne et colonne : 0 .. (n-1)
+    '''
+    try:
+        ligne = int(ligne)
+        colonne = int(colonne)
+    except:
+        return 1
+    if not isMatRect(matrice):
+        return matrice
+    i, j = tailleMat(matrice)
+    if ligne >= i or colonne >= j:
+        return 3
+    ############################################################################ 
+    M = []
+    X = []
+    for i in matrice:
+        X.append(i[:])
+    for i, line in enumerate(X):
+        if i != ligne:
+            line.pop(colonne)
+            M.append(line)
+    return M
+
+
+def detMat(matrice):
+    '''renvoie le déterinant de la matrice
+    - matrice
+    - rectangulaire
+    - complexe
+    '''
+    if not isMatCarree(matrice):
+        return False
+    n, p = tailleMat(matrice)
+    del p
+    if n == 2:
+        return det2Mat(matrice)
+    elif n == 3:
+        return det3Mat(matrice)
+    else:
+        s = 0
+        for i, line in enumerate(matrice):
+            #~ print(s)
+            s += line[i]*((-1)**i)*detMat(subMatrix(matrice, 0, i))
+    return s
+
+
+
+
+
+
 a = [
     [complex(1, 1), 2, 3], 
     [4, 5, 6], 
     [7, 8, 9]
     ]
 
-#~ print(a)
-#~ print(hilbertMat(a))
+b = [
+    [1, 0, 0, 0, 0], 
+    [0, 1, 0, 0, 0], 
+    [0, 0, 1, 0, 0], 
+    [0, 0, 0, 1, 0], 
+    [0, 0, 0, 0, 1]
+    ]
 
-
-print(isMatCarree(a))
-
-
-
-
-
-
+c = [
+    [1, 0, 0, 0], 
+    [0, 1, 0, 0], 
+    [0, 0, 1, 0], 
+    [0, 0, 0, 1]
+    ] 
 
