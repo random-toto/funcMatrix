@@ -29,6 +29,54 @@ def absMat(matrice):
     return M 
 
 
+def ones(entier=1):
+    
+    '''
+    '''
+    try:
+        entier = int(entier)
+    except:
+        raise Exception("ones : Pas un réel")
+    L = [1 for i in range(entier)]
+    M = []
+    for i in range(entier):
+        M.append(L)
+    return M
+
+
+def zeros(entier = 1):
+    '''
+    '''
+    try:
+        entier = int(entier)
+    except:
+        raise Exception("zeros : Pas un réel")
+    L = [0 for i in range(entier)]
+    M = []
+    for i in range(entier):
+        M.append(L)
+    return M
+
+
+def idMat(entier = 1):
+    '''
+    '''
+    try:
+        entier = int(entier)
+    except:
+        raise Exception("idMat : Pas un réel")
+    e = 0
+    M = []
+    for i in range(entier):
+        L = [1 if i == e else 0 for i in range(entier)]
+        M.append(L)
+        e +=1
+    return M
+
+print(idMat(5))
+
+
+
 def det2Mat(matrice):
     '''Renvoie le déterminant d'une matrice 2*2. False en cas d'échec
     - matrice
@@ -72,6 +120,8 @@ def newMatrix(matrice):
 def isListCpx(vecteur):
     '''
     '''
+    if type(vecteur) is not list:
+        raise Exception("isListCpx : Pas un vecteur/list")
     for i in vecteur:
         try:
             abs(i)
@@ -213,6 +263,24 @@ def hilbertMat(matrice):
         M.append(L)
     R = transposeMat2d(M)
     return R
+
+
+def translatMat(matrice, complexe):
+    '''
+    '''
+    if not isMatComplexe(matrice):
+        raise Exception("translateMat : Pas une matrice complexe.")
+    try:
+        abs(complexe)
+    except:
+        raise Exception("translatMat : Pas un complexe.")
+    M = []
+    for i in matrice:
+        L = []
+        for j in i:
+            L.append(j+complexe)
+        M.append(L)
+    return M
 
 
 def sumMat(matrice):
@@ -406,6 +474,33 @@ def pdMat(mat1, mat2):
     return M
     
 
+def homothetieMat(matrice, complexe):
+    '''
+    '''
+    if not isMatrice(matrice):
+        raise Exception("homothetieMat : L'objet reçu n'est pas une matrice.")
+    try:
+        abs(complexe)
+    except:
+        raise Exception("homothetieMat : Pas un complexe.")
+    M = []
+    for i in matrice:
+        L = []
+        for j in i:
+            L.append(j*complexe)
+        M.append(L)
+    return M
+
+
+def inverseMat(matrice):
+    '''
+    '''
+    if not isInversible(matrice):
+        raise Exception("inverseMat : La matrice n'est pas inversible")
+    M = newMatrix(matrice)
+    return homothetieMat(transposeMat2d(coMatrice(M)), (detMat(M))**(-1))
+
+
 
 
 a = [
@@ -433,4 +528,6 @@ c = [
 #~ d = coMatrice(b)
 #~ print(d)
 
-print(pdMat(b, b))
+#~ print(pdMat(b, b))
+
+#~ print(inverseMat(b))
